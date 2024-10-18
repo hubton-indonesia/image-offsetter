@@ -1,14 +1,9 @@
-function min(a: number, b: number) {
-  return a < b ? a : b
+interface ImageOffsetterParams {
+  containerAnchor: HTMLDivElement
+  imageAnchor: HTMLDivElement
+  image: HTMLImageElement
+  pull: 'left' | 'right'
 }
-
-/**
- * @typedef ImageOffsetterParams
- * @property {HTMLDivElement} containerAnchor
- * @property {HTMLDivElement} imageAnchor
- * @property {HTMLImageElement} image
- * @property {'left'|'right'} pull
- */
 
 /**
  * @example
@@ -42,17 +37,7 @@ export class ImageOffsetter {
   offset: number = 0
   pull: 'right' | 'left'
 
-  /**
-   *
-   * @param {ImageOffsetterParams} param0
-   */
-  constructor({ containerAnchor, imageAnchor, image, pull = 'right' }: {
-    containerAnchor: HTMLDivElement,
-    imageAnchor: HTMLDivElement,
-    image: HTMLImageElement,
-    pull: 'right' | 'left',
-  }) {
-    console.log('test')
+  constructor({ containerAnchor, imageAnchor, image, pull = 'right' }: ImageOffsetterParams) {
     this.containerAnchor = containerAnchor
     this.imageAnchor = imageAnchor
     this.image = image
@@ -77,4 +62,9 @@ export class ImageOffsetter {
       this.image.style.marginLeft = `${this.offset * -1}px`
     }
   }
+}
+
+/* Helpers */
+function min(a: number, b: number) {
+  return a < b ? a : b
 }
