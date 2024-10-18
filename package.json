@@ -1,5 +1,5 @@
 {
-  "name": "image-offseter",
+  "name": "@hubton/image-offseter",
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
@@ -9,5 +9,9 @@
   "keywords": [],
   "author": "Faris Han",
   "license": "MIT",
-  "description": ""
+  "description": "",
+  "repository": "https://github.com/hubton-indonesia/image-offsetter.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

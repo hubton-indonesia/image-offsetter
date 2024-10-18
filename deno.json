@@ -1,0 +1,19 @@
+{
+  "name": "@hubton/image-offsetter",
+  "version": "0.1.1",
+  "exports": "./mod.ts",
+  "tasks": {
+    "dev": "deno run --watch main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "compilerOptions": {
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ]
+  },
+  "license": "MIT"
+}
