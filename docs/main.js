@@ -6,5 +6,6 @@ new ImageOffsetter({
   image: document.querySelector('.js-image'),
   on: {
     offsetChange: (offset) => console.log({ offset })
-  }
+  },
+  maxWindowWidth: window.innerWidth
 })
