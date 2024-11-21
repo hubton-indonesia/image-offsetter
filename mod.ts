@@ -4,34 +4,15 @@ interface ImageOffsetterParams {
   containerAnchor: HTMLDivElement
   imageAnchor: HTMLDivElement
   image: HTMLImageElement
-  pull: 'left' | 'right'
+  pull?: 'left' | 'right'
   on?: {
     offsetChange: Listener
   }
+  maxWindowWidth?: number
 }
 
-/**
- * @example
- * ```html
- * <div class="container mx-auto">
- *  <div class="w-full js-container-anchor"></div>
- *  <div class="w-10/12 ml-auto">
- *    <div class="w-full js-image-anchor"></div>
- *    <img src="https://placehold.co/300" class="w-full h-auto js-image"></img>
- *  </div>
- * </div>
- * ```
- * ---
- * ```js
- * new ImageOffsetter({
- *   containerAnchor: document.querySelector('.js-container-anchor'),
- *   imageAnchor: document.querySelector('.js-image-anchor'),
- *   image: document.querySelector('.js-image'),
- * })
- * ```
- */
 export class ImageOffsetter {
-  MAX_WINDOW_WIDTH = 1728 //px
+  maxWindowWidth = 1728 //px
 
   containerAnchor: HTMLDivElement
   imageAnchor: HTMLDivElement
@@ -48,12 +29,14 @@ export class ImageOffsetter {
     imageAnchor,
     image,
     pull = 'right',
-    on
+    maxWindowWidth,
+    on,
   }: ImageOffsetterParams) {
     this.containerAnchor = containerAnchor
     this.imageAnchor = imageAnchor
     this.image = image
     this.pull = pull
+    if (maxWindowWidth) this.maxWindowWidth = maxWindowWidth
 
     if (on) {
       if (on.offsetChange) {
@@ -68,7 +51,7 @@ export class ImageOffsetter {
   handleResize() {
     this.imageWidthOrigin = this.imageAnchor.clientWidth
     this.containerWidth = this.containerAnchor.clientWidth
-    this.offset = (min(this.MAX_WINDOW_WIDTH, globalThis.innerWidth) - this.containerWidth) / 2
+    this.offset = (min(this.maxWindowWidth, globalThis.innerWidth) - this.containerWidth) / 2
 
     for (let index = 0; index < this.listeners.length; index++) {
       const fn = this.listeners[index];
