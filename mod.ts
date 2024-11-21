@@ -1,8 +1,13 @@
+type Listener = (offset: number) => void
+
 interface ImageOffsetterParams {
   containerAnchor: HTMLDivElement
   imageAnchor: HTMLDivElement
   image: HTMLImageElement
   pull: 'left' | 'right'
+  on?: {
+    offsetChange: Listener
+  }
 }
 
 /**
@@ -36,21 +41,39 @@ export class ImageOffsetter {
   containerWidth: number = 0
   offset: number = 0
   pull: 'right' | 'left'
+  listeners: Listener[] = []
 
-  constructor({ containerAnchor, imageAnchor, image, pull = 'right' }: ImageOffsetterParams) {
+  constructor({
+    containerAnchor,
+    imageAnchor,
+    image,
+    pull = 'right',
+    on
+  }: ImageOffsetterParams) {
     this.containerAnchor = containerAnchor
     this.imageAnchor = imageAnchor
     this.image = image
     this.pull = pull
 
+    if (on) {
+      if (on.offsetChange) {
+        this.listeners.push(on.offsetChange)
+      }
+    }
+
     this.handleResize()
-    window.addEventListener('resize', () => this.handleResize())
+    globalThis.addEventListener('resize', () => this.handleResize())
   }
 
   handleResize() {
     this.imageWidthOrigin = this.imageAnchor.clientWidth
     this.containerWidth = this.containerAnchor.clientWidth
-    this.offset = (min(this.MAX_WINDOW_WIDTH, window.innerWidth) - this.containerWidth) / 2
+    this.offset = (min(this.MAX_WINDOW_WIDTH, globalThis.innerWidth) - this.containerWidth) / 2
+
+    for (let index = 0; index < this.listeners.length; index++) {
+      const fn = this.listeners[index];
+      fn(this.offset)
+    }
 
     this.image.style.minWidth = `${this.imageWidthOrigin + this.offset}px`;
 
